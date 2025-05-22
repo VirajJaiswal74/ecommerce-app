@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
 import { setSingleJob } from "@/redux/jobSlice";
 import axios from "axios";
-import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
+// import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ const JobDescription = () => {
   const applyJobHandler = async () => {
     try {
       const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/apply/${jobId}`,
+        `${process.env.BACKEND_URL}/api/v1/application/apply/${jobId}`,
         {},
         { withCredentials: true }
       );
@@ -46,10 +46,13 @@ const JobDescription = () => {
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
-          withCredentials: true,
-        });
-        console.log(res)
+        const res = await axios.get(
+          `${process.env.BACKEND_URL}/api/v1/job/get/${jobId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(res);
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
           setIsApplied(
